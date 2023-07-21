@@ -1,0 +1,5 @@
+# Directories to hold virtualenvs
+venv/
+
+# dotenv environment variables file
+.env

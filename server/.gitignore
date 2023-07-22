@@ -3,3 +3,5 @@ venv/
 
 # dotenv environment variables file
 .env
+.Spacefile
+.space/

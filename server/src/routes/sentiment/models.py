@@ -1,7 +1,12 @@
+from datetime import datetime
+
 from sqlalchemy.orm import declarative_base, DeclarativeBase
 from sqlalchemy import (
     Column, Text, BigInteger, Identity, CheckConstraint, Date, text, Enum
 )
+
+from sqlalchemy.dialects.postgresql import JSONB
+
 from src.database import engine
 
 Base: DeclarativeBase = declarative_base()
@@ -9,7 +14,7 @@ Base: DeclarativeBase = declarative_base()
 
 class Sentiment(Base):
 
-    __tablename__ = "sentiment"
+    __tablename__ = "sentiments"
 
     id = Column(
         BigInteger,
@@ -19,7 +24,7 @@ class Sentiment(Base):
 
     subreddit = Column(
         Text,
-        CheckConstraint(text("subreddit ~ '^[A-Za-z0-9_]{1, 18}$'")),
+        CheckConstraint(text("subreddit ~ '^[A-Za-z0-9_]{1,18}$'")),
         nullable=False
     )
 
@@ -36,6 +41,8 @@ class Sentiment(Base):
         Date,
         default=text("(current_date AT TIME ZONE 'UTC')::date")
     )
+
+    posts_data = Column(JSONB, nullable=False)
 
 
 Base.metadata.create_all(engine)

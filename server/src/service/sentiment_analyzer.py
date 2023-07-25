@@ -4,7 +4,7 @@ from os import environ
 from typing import Dict, List, Any
 import json
 from datetime import datetime
-from .reddit_scrapper import main_data_fetcher
+from src.service.reddit_scrapper import main_data_fetcher
 
 
 load_dotenv()
@@ -52,12 +52,12 @@ async def analyze_data(data: List[Dict[str, Any]]):
     ]
     completion = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages)
     print(completion)
-    return completion["choices"][0]["message"]["content"]
+    return json.loads(completion["choices"][0]["message"]["content"], strict=False)
 
 
 async def analyze_and_store(session, model_class, subreddit) -> None:
     posts_data = await main_data_fetcher(subreddit)
-    analysis = json.loads(await analyze_data(posts_data), strict=False)
+    analysis = await analyze_data(posts_data)
     sentiment_data = model_class()
     sentiment_data.subreddit = subreddit
     sentiment_data.sentiment = analysis["sentiment"]

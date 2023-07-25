@@ -45,18 +45,19 @@ Based on each post's data, please respond with:
 """
 
 
-def analyze_data(data: List[Dict[str, Any]]):
+async def analyze_data(data: List[Dict[str, Any]]):
     messages = [
         {"role": "system", "content": f"{PROMPT}"},
         {"role": "user", "content": f"{str(data)}"}
     ]
     completion = openai.ChatCompletion.create(model="gpt-3.5-turbo-16k", messages=messages)
+    print(completion)
     return completion["choices"][0]["message"]["content"]
 
 
-async def analyze_and_store(session, model_class, subreddit):
+async def analyze_and_store(session, model_class, subreddit) -> None:
     posts_data = await main_data_fetcher(subreddit)
-    analysis = json.loads(analyze_data(posts_data), strict=False)
+    analysis = json.loads(await analyze_data(posts_data), strict=False)
     sentiment_data = model_class()
     sentiment_data.subreddit = subreddit
     sentiment_data.sentiment = analysis["sentiment"]

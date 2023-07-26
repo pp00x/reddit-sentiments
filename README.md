@@ -1,1 +1,1 @@
-# subreddit-moods
+# reddit-sentiments

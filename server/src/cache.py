@@ -19,4 +19,4 @@ async def cache_analysis(subreddit, sentiment_analysis):
 
 
 async def get_cached_analysis(subreddit):
-    return json.loads(await redis_client.get(subreddit))
+    return await redis_client.get(subreddit)

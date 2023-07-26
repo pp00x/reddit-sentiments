@@ -11,4 +11,8 @@ async def startup():
     await FastAPILimiter.init(redis_client)
 
 
+@app.get("/")
+async def index():
+    return "Reddit-Sentiments"
+
 app.include_router(sentiment_router)

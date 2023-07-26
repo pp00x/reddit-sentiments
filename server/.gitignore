@@ -5,3 +5,8 @@ venv/
 .env
 .Spacefile
 .space/
+
+__pycache__/
+
+*.pyc
+*.pyo
